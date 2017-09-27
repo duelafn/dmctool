@@ -24,11 +24,13 @@ import re, json, sys, os
 from os.path import split, join, dirname, isdir, basename, exists, abspath
 sys.path.insert(1, dirname(dirname(abspath(__file__))))
 
+from io import open
+
 import logging
 logging.basicConfig()
 logger = logging.getLogger('dmctool')
 
-from galil_apci import Galil, GalilFile
+from dmctool import GalilFile, dmchash, dmcadd_xAPI
 
 
 def user_conf(*name):
@@ -42,7 +44,7 @@ def user_conf(*name):
 
 def xapi_name_type(name):
     if len(name) <= 5 and '"' not in name:
-        return name.encode('ascii')
+        return name
     raise argparse.ArgumentTypeError("xAPI name must be 5 or fewer ASCII characters long")
 
 def getopts():
@@ -80,7 +82,8 @@ def MAIN(argv):
 
         # Load Variables
         if argv.vars:
-            machine = json.load(open(argv.vars, 'rb'))
+            with open(argv.vars, 'r', encoding='utf-8') as fh:
+                machine = json.load(fh)
         else:
             if not argv.default:
                 logger.warning('Loading Empty Machine Definition')
@@ -98,15 +101,16 @@ def MAIN(argv):
             logger.warning(err)
 
         if argv.xapi:
-            prog_hash = Galil.computeProgramHash(dmc)
-            dmc = Galil.add_xAPI(dmc, argv.xapi, prog_hash, columns=(argv.columns - 1))
+            prog_hash = dmchash(dmc)
+            dmc = dmcadd_xAPI(dmc, argv.xapi, prog_hash, columns=(argv.columns - 1))
 
         # Write out results
         if not argv.output or '-' == argv.output:
             print(dmc)
         else:
             fout = get_output(f, argv.output)
-            open(fout, "w").write(dmc + "\n")
+            with open(fout, "w", encoding='utf-8') as fh:
+                fh.write(dmc + "\n")
 
         lines  = re.compile("[\r\n]+").split(dmc)
         label_pat = re.compile("^#")

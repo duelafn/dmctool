@@ -276,7 +276,7 @@ class GalilFile(object):
                 # long strings
                 if not pc_MG.search(cmd):
                     strings = cmd.split('"')
-                    for idx in (x for x in xrange(1, len(strings), 2) if len(strings[x]) > 5):
+                    for idx in (x for x in range(1, len(strings), 2) if len(strings[x]) > 5):
                         errors.append( "line {}, Long string '{}' in command: {}".format(lineno, strings[idx], cmd) )
 
         # jumps to non-existant labels

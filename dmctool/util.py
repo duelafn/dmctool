@@ -41,7 +41,7 @@ def string_to_galil_hex(string):
     """
     if (len(string) > 6):
         raise ValueError("Galil strings may have at most 6 characters")
-    hexstring = b2a_hex(string.ljust(6, "\0"))
+    hexstring = b2a_hex(string.encode('utf-8').ljust(6, b"\0")).decode('utf-8')
     return ('$' + hexstring[0:8] + '.' + hexstring[8:12]).upper()
 
 def galil_hex_to_string(ghex):
@@ -66,7 +66,7 @@ def dmchash(program):
     Computes a hash of the program. Returns a Galil string.
     """
     m = hashlib.md5()
-    m.update(program)
+    m.update(program.encode('utf-8'))
     return string_to_galil_hex(m.hexdigest()[0:6])
 
 def dmcround(val):
