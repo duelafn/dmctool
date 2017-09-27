@@ -418,7 +418,7 @@ class GalilFile(object):
         content = self.env.get_template(name).render(context)
         # double semicolons confuse galil but are somewhat easy to
         # introduce when templating. Strip them out here:
-        return re.sub(r';(\s*)(?=;)', r'\1', content).encode('utf-8')
+        return re.sub(r';(\s*)(?=;)', r'\1', content)
 
     def get_template(self, name):
         """

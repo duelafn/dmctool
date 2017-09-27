@@ -28,11 +28,13 @@ from jinja2 import UndefinedError
 class BasicAccess(unittest.TestCase):
     def setUp(self):
         self.gf = GalilFile(path="test/gal")
-        self.machine = json.load(open("test/machine.json",'r'))
+        with open("test/machine.json",'r') as fh:
+            self.machine = json.load(fh)
 
     def test_galtest(self):
         got = self.gf.load("galtest.gal", self.machine)
-        wanted = open('test/gal/galtest.out').read().strip()
+        with open('test/gal/galtest.out') as fh:
+            wanted = fh.read().strip()
         self.assertEqual( got, wanted, "galtest.gal" )
 
         with self.assertRaises(UndefinedError):
