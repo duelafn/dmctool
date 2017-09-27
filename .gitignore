@@ -1,5 +1,7 @@
 # See: https://github.com/github/gitignore
 
+/debbuild
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

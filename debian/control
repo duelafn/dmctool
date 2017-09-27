@@ -10,7 +10,7 @@ Homepage: https://github.com/duelafn/dmctool
 
 Package: dmctool
 Architecture: all
-Depends: ${misc:Depends}, ${python3:Depends}
+Depends: ${misc:Depends}, ${python3:Depends}, python3-dmctool
 Description: Tool to manipulate Jinja-template DMC files
  Galil controllers are a bit finicky about their input DMC. This script can
  process and reshape DMC files as well as remove comments and treat the DMC
@@ -18,7 +18,7 @@ Description: Tool to manipulate Jinja-template DMC files
 
 Package: python-dmctool
 Architecture: all
-Depends: ${misc:Depends}, ${python3:Depends}, python-jinja2, python-jinja2-apci
+Depends: ${misc:Depends}, ${python:Depends}, python-jinja2, python-jinja2-apci
 Description: Library to manipulate Jinja-template DMC files (Python 2)
  Galil controllers are a bit finicky about their input DMC. This script can
  process and reshape DMC files as well as remove comments and treat the DMC

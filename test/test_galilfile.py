@@ -18,22 +18,29 @@
 from __future__ import division, absolute_import, print_function, unicode_literals
 import unittest
 
-import sys, json
-from os.path import dirname, abspath
-sys.path.insert(1, dirname(dirname(abspath(__file__))))
+import sys
+import json
+from os.path import join, isdir
+
+from subprocess import call
 
 from dmctool import GalilFile
 from jinja2 import UndefinedError
 
 class BasicAccess(unittest.TestCase):
+    def d(self, *paths):
+        return join(self.testdir, *paths)
+
     def setUp(self):
-        self.gf = GalilFile(path="test/gal")
-        with open("test/machine.json",'r') as fh:
+        self.testdir = "test" if isdir("test") else "."
+
+        self.gf = GalilFile(path=self.d("gal"))
+        with open(self.d("machine.json"),'r') as fh:
             self.machine = json.load(fh)
 
     def test_galtest(self):
         got = self.gf.load("galtest.gal", self.machine)
-        with open('test/gal/galtest.out') as fh:
+        with open(self.d('gal/galtest.out')) as fh:
             wanted = fh.read().strip()
         self.assertEqual( got, wanted, "galtest.gal" )
 

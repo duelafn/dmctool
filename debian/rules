@@ -2,5 +2,7 @@
 #export DH_VERBOSE=1
 export PYBUILD_NAME=dmctool
 
+export PYBUILD_AFTER_INSTALL=rm '{destdir}/usr/bin/dmctool'
+
 %:
 	dh $@ --with python2,python3 --buildsystem=pybuild

@@ -50,5 +50,5 @@ test: build
 
 clean:
 	pyclean .
-	rm -rf build dist
+	rm -rf build debbuild dmctool.egg-info
 	rm -f MANIFEST
