@@ -6,7 +6,4 @@
 # This software is Copyright (c) 2013 APCI, LLC.
 
 from __future__ import division, absolute_import, print_function, unicode_literals
-__version__ = "1.2.0"
-
-from .file import *
-from .util import *
+__version__ = "1.3.0"

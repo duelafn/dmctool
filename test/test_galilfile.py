@@ -15,7 +15,7 @@ from os.path import join, isdir
 
 from subprocess import call
 
-from dmctool import GalilFile
+from dmctool.file import GalilFile
 from jinja2 import UndefinedError
 
 class BasicAccess(unittest.TestCase):

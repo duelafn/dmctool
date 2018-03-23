@@ -21,7 +21,8 @@ import logging
 logging.basicConfig()
 logger = logging.getLogger('dmctool')
 
-from dmctool import GalilFile, dmchash, dmcadd_xAPI
+from dmctool.file import GalilFile
+from dmctool.util import dmchash, dmcadd_xAPI
 
 
 def user_conf(*name):
