@@ -123,7 +123,7 @@ class GalilFile(object):
         g["acos"] = acos
 
 
-    def __init__(self, path=None, package=None, line_length=79):
+    def __init__(self, path=None, package=None, line_length=79, line_continue=None):
         """
         @param path: If a path (array of directories) is provided, it will
             be prepended to the template search path. The default path is
@@ -133,6 +133,7 @@ class GalilFile(object):
             but some are capped at 39.
         """
         self.line_length = line_length
+        self.line_continue = line_continue
 
         loaders = []
         if path:
@@ -348,7 +349,15 @@ class GalilFile(object):
                 line = line + ";" + _lines1[i+1]
                 i += 1
 
-            if len(line):
+            if self.line_continue and len(line) > self.line_length:
+                # Single line is too long, truncate and use line
+                # continuation, hole total length is within limits.
+                n = self.line_length - 1
+                lst = [ line[j:j+n] for j in range(0, len(line), n) ]
+                for j in range(len(lst)-1): # SKIP LAST ELEMENT!
+                    lst[j] += self.line_continue
+                _lines2.extend(lst)
+            elif len(line):
                 _lines2.append(line)
             i += 1
 

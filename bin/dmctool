@@ -60,6 +60,7 @@ within line length and count limits.
     parser.add_argument('--default', action='store_true', help='load default config without raising warning')
     parser.add_argument('--xapi', type=xapi_name_type, metavar="NAME", help='Substitute xAPI support functions with xPrgName given')
     parser.add_argument('--columns', type=int, default=80, help='Number of columns allowed by controller')
+    parser.add_argument('--line-continue', type=str, default=None, help='Line continuation character (if supported)')
 
     parser.add_argument('file', type=str, nargs='+', help='files to compile')
     return parser.parse_args()
@@ -69,7 +70,7 @@ def MAIN(argv):
     for f in argv.file:
         # Build template
         (path, fname) = split(f)
-        gf = GalilFile(path if len(path) else ".", line_length=(argv.columns - 1))
+        gf = GalilFile(path if len(path) else ".", line_length=(argv.columns - 1), line_continue=argv.line_continue)
 
         # Load Variables
         if argv.vars:
