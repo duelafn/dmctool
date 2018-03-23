@@ -19,7 +19,8 @@ sdist: test
 	python setup.py sdist
 
 dist: test debbuild
-	mv -f debbuild/${PKGNAME}_* debbuild/*.deb dist/
+	mkdir -p dist
+	cp -f  debbuild/${PKGNAME}_* debbuild/*.deb dist/
 	rm -rf debbuild
 
 debbuild: test sdist
