@@ -11,7 +11,8 @@ import unittest
 
 import sys
 import json
-from os.path import join, isdir
+import os.path
+sys.path.insert(1, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from subprocess import call
 
@@ -20,10 +21,10 @@ from jinja2 import UndefinedError
 
 class BasicAccess(unittest.TestCase):
     def d(self, *paths):
-        return join(self.testdir, *paths)
+        return os.path.join(self.testdir, *paths)
 
     def setUp(self):
-        self.testdir = "test" if isdir("test") else "."
+        self.testdir = "test" if os.path.isdir("test") else "."
 
         self.gf = GalilFile(path=self.d("gal"))
         with open(self.d("machine.json"),'r') as fh:
