@@ -17,10 +17,9 @@ galil_hex_to_string
 string_to_galil_hex
 '''.split()
 
-
+import datetime
 import hashlib
 from binascii import b2a_hex
-
 
 def string_to_galil_hex(string):
     """
@@ -84,12 +83,28 @@ def dmcadd_xAPI(program, name, hash, columns=79):
     if columns are too small, this function WILL modify the line count
     in order to satisfy the column requirements. Otherwise it will not.
     """
-    xINIT = '#xINIT;xPrgName="{}";xPrgHash={};xAPIOk=0;EN\n'.format(name, hash)
-    if columns < len(xINIT):
-        xINIT = '#xINIT;xPrgName="{}";\nxPrgHash={};\nxAPIOk=0;EN\n'.format(name, hash)
+    xINIT = [
+        '#xINIT',
+        'xPrgName="{}"'.format(name),
+        'xPrgHash={}'.format(hash),
+        'xAPIOk=0',
+        datetime.datetime.today().strftime('xPrgDate=%Y%m%d'),
+        'EN',
+    ]
+    xINIT_lines = [""]
+    idx = 0;
+    for cmd in xINIT:
+        if len(xINIT_lines[idx]) + len(cmd) + 1 < columns:
+            if xINIT_lines[idx]:
+                xINIT_lines[idx] += ";"
+            xINIT_lines[idx] += cmd
+        else:
+            xINIT_lines.append(cmd)
+            idx += 1
+    xINIT_lines.append("")  # for trailing EOL
 
     return program.replace(
-        "#xINIT;EN\n", xINIT
+        "#xINIT;EN\n", "\n".join(xINIT_lines)
     ).replace(
         "#xAPIOk;EN\n", '#xAPIOk;xAPIOk=xAPIOk+1;EN\n'
     )
