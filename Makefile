@@ -31,13 +31,15 @@ debbuild: test sdist
 	cd debbuild && tar -xzf ${PKGNAME}_${PKG_VERSION}.orig.tar.gz
 	cp -r debian debbuild/${PKGNAME}-${PKG_VERSION}/
 	cd debbuild/${PKGNAME}-${PKG_VERSION} && dpkg-buildpackage -rfakeroot -uc -us -tc -i
+	for f in debbuild/*.changes debbuild/*.deb debbuild/*.dsc; do /bin/echo -e "\e[1mlintian: $$f\e[0m"; lintian "$$f"; done
+
 
 build:
 	python setup.py build_ext --inplace
 
 test: build
-	python2 setup.py test >/dev/null
-	python3 setup.py test >/dev/null
+	python2 setup.py nosetests >/dev/null
+	python3 setup.py nosetests >/dev/null
 
 clean:
 	pyclean .

@@ -1,0 +1,11 @@
+
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Source: https://github.com/duelafn/dmctool
+
+
+Files: *
+Copyright:
+ 2017 Dean Serenevy <dean@serenevy.net>
+ 2013 APCI, LLC.
+License: LGPL-3
+ On Debian systems, this license is available at /usr/share/common-licenses/LGPL-3

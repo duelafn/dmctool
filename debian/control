@@ -1,11 +1,11 @@
 Source: dmctool
-Maintainer: Dean Serneevy <dean@serenevy.net>
+Maintainer: Dean Serenevy <dean@serenevy.net>
 Section: python
 Priority: optional
 Build-Depends: debhelper (>= 10), dh-python, python-all, python-setuptools, python3-all, python3-setuptools
 X-Python-Version: >= 2.6
 X-Python3-Version: >= 3.2
-Standards-Version: 3.9.1
+Standards-Version: 3.9.8
 Homepage: https://github.com/duelafn/dmctool
 
 Package: dmctool
@@ -15,6 +15,8 @@ Description: Tool to manipulate Jinja-template DMC files
  Galil controllers are a bit finicky about their input DMC. This script can
  process and reshape DMC files as well as remove comments and treat the DMC
  files as Jinja2 templates which makes writing DMC files much cleaner.
+ .
+ This package contains the dmctool executable
 
 Package: python-dmctool
 Architecture: all
@@ -23,6 +25,8 @@ Description: Library to manipulate Jinja-template DMC files (Python 2)
  Galil controllers are a bit finicky about their input DMC. This script can
  process and reshape DMC files as well as remove comments and treat the DMC
  files as Jinja2 templates which makes writing DMC files much cleaner.
+ .
+ This package contains python2 libraries
 
 Package: python3-dmctool
 Architecture: all
@@ -31,3 +35,5 @@ Description: Library to manipulate Jinja-template DMC files (Python 3)
  Galil controllers are a bit finicky about their input DMC. This script can
  process and reshape DMC files as well as remove comments and treat the DMC
  files as Jinja2 templates which makes writing DMC files much cleaner.
+ .
+ This package contains python3 libraries
