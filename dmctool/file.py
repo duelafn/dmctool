@@ -123,11 +123,13 @@ class GalilFile(object):
         g["acos"] = acos
 
 
-    def __init__(self, path=None, package=None, line_length=79, line_continue=None):
+    def __init__(self, path=None, package=None, line_length=79, line_continue=None, package_path='gal'):
         """
         @param path: If a path (array of directories) is provided, it will
-            be prepended to the template search path. The default path is
-            the "gal" folder in the apci module directory.
+            be prepended to the template search path.
+
+        @param package: Creates a jinja package loader from the named package.
+        @param package_path: path within package contining template files.
 
         @param line_length: Galil maximum line length. 79 for most boards,
             but some are capped at 39.
