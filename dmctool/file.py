@@ -164,6 +164,10 @@ class GalilFile(object):
         """Renders and minifies a template"""
         return self.minify( self.render(name, context) )
 
+    def load_str(self, code, context):
+        """Renders and minifies a template"""
+        return self.minify( self.render_str(code, context) )
+
     def lint(self, content, warnings=False):
         """
         Performs a lint check on the galil code
@@ -418,6 +422,17 @@ class GalilFile(object):
         minification.
         """
         content = self.env.get_template(name).render(context)
+        # double semicolons confuse galil but are somewhat easy to
+        # introduce when templating. Strip them out here:
+        return re.sub(r';(\s*)(?=;)', r'\1', content)
+
+    def render_str(self, code, context):
+        """
+        Renders a galil template file (substitutes variables and expands
+        inclusions), but does not perform whitespace trimming or
+        minification.
+        """
+        content = self.env.from_string(code).render(context)
         # double semicolons confuse galil but are somewhat easy to
         # introduce when templating. Strip them out here:
         return re.sub(r';(\s*)(?=;)', r'\1', content)

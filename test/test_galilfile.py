@@ -20,24 +20,33 @@ from dmctool.file import GalilFile
 from jinja2 import UndefinedError
 
 class BasicAccess(unittest.TestCase):
+    testdir = "test" if os.path.isdir("test") else "."
+
     def d(self, *paths):
         return os.path.join(self.testdir, *paths)
+    def read(self, *paths):
+        with open(self.d(*paths), 'r') as fh:
+            return fh.read()
 
-    def setUp(self):
-        self.testdir = "test" if os.path.isdir("test") else "."
+    def test_basic(self):
+        gf = GalilFile(path=self.d("gal"))
+        machine = json.loads(self.read("machine.json"))
+        wanted = self.read('gal/galtest.out').strip()
 
-        self.gf = GalilFile(path=self.d("gal"))
-        with open(self.d("machine.json"),'r') as fh:
-            self.machine = json.load(fh)
-
-    def test_galtest(self):
-        got = self.gf.load("galtest.gal", self.machine)
-        with open(self.d('gal/galtest.out')) as fh:
-            wanted = fh.read().strip()
+        got = gf.load("galtest.gal", machine)
         self.assertEqual( got, wanted, "galtest.gal" )
 
         with self.assertRaises(UndefinedError):
-            self.gf.load("galtest.gal", dict())
+            gf.load("galtest.gal", dict())
+
+    def test_load_str(self):
+        gf = GalilFile()
+        machine = json.loads(self.read("machine.json"))
+        wanted = self.read('gal/galtest.out').strip()
+        source = self.read('gal/galtest.gal').strip()
+
+        got = gf.load_str(source, machine)
+        self.assertEqual( got, wanted )
 
 
 if __name__ == '__main__':
