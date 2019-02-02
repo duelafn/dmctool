@@ -67,7 +67,7 @@ def dmcround(val):
     val = round(float(val), 4)
     return int(val) if val == int(val) else val
 
-def dmcadd_xAPI(program, name, hash, columns=79):
+def dmcadd_xAPI(program, name, hash=None, columns=79):
     """
     Returns a modified program with required xAPI support functions.
 
@@ -83,6 +83,9 @@ def dmcadd_xAPI(program, name, hash, columns=79):
     if columns are too small, this function WILL modify the line count
     in order to satisfy the column requirements. Otherwise it will not.
     """
+    if hash is None:
+        hash = dmchash(program)
+
     xINIT = [
         '#xINIT',
         'xPrgName="{}"'.format(name),
