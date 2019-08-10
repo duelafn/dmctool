@@ -37,9 +37,9 @@ debbuild: test sdist
 build:
 	python setup.py build_ext --inplace
 
-test: build
-	python2 setup.py nosetests >/dev/null
-	python3 setup.py nosetests >/dev/null
+test:
+	python3 -E -B -m nose --verbosity=0 test
+	python2 -E -B -m nose --verbosity=0 test
 
 clean:
 	pyclean .
