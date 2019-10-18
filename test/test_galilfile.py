@@ -14,8 +14,6 @@ import json
 import os.path
 sys.path.insert(1, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from subprocess import call
-
 from dmctool.file import GalilFile
 from jinja2 import UndefinedError
 

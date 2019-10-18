@@ -19,7 +19,17 @@ string_to_galil_hex
 
 import datetime
 import hashlib
+import re
+import six
 from binascii import b2a_hex
+
+if six.PY2:
+    def hex2str(val):
+        return val.group(0).decode('hex')
+else:
+    def hex2str(val):
+        return bytes.fromhex(val.group(0)).decode('utf-8')
+
 
 def string_to_galil_hex(string):
     """
@@ -40,7 +50,7 @@ def galil_hex_to_string(ghex):
 
     E.g.: '$31323334.3500' -> '12345'
     """
-    return re.sub('[a-zA-Z0-9]{2}', hex2str, ghex.translate(None, '$.')).rstrip("\0")
+    return re.sub('[a-zA-Z0-9]{2}', hex2str, re.sub(r'[$.]', '', ghex)).rstrip("\0")
 
 def galil_hex_to_binary(ghex):
     """
@@ -48,7 +58,7 @@ def galil_hex_to_binary(ghex):
 
     E.g.: '$31323334.3500' -> '12345\\x00'
     """
-    return re.sub('[a-zA-Z0-9]{2}', hex2str, ghex.translate(None, '$.'))
+    return re.sub('[a-zA-Z0-9]{2}', hex2str, re.sub(r'[$.]', '', ghex))
 
 def dmchash(program):
     """
@@ -67,7 +77,7 @@ def dmcround(val):
     val = round(float(val), 4)
     return int(val) if val == int(val) else val
 
-def dmcadd_xAPI(program, name, hash=None, columns=79):
+def dmcadd_xAPI(program, name, hash=None, columns=79, timestamp=None):
     """
     Returns a modified program with required xAPI support functions.
 
@@ -85,17 +95,19 @@ def dmcadd_xAPI(program, name, hash=None, columns=79):
     """
     if hash is None:
         hash = dmchash(program)
+    if timestamp is None:
+        timestamp = datetime.datetime.today()
 
     xINIT = [
         '#xINIT',
         'xPrgName="{}"'.format(name),
         'xPrgHash={}'.format(hash),
         'xAPIOk=0',
-        datetime.datetime.today().strftime('xPrgDate=%Y%m%d'),
+        timestamp.strftime('xPrgDate=%Y%m%d'),
         'EN',
     ]
     xINIT_lines = [""]
-    idx = 0;
+    idx = 0
     for cmd in xINIT:
         if len(xINIT_lines[idx]) + len(cmd) + 1 < columns:
             if xINIT_lines[idx]:

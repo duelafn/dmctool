@@ -12,6 +12,11 @@ PKG_VERSION = $(shell perl -ne 'print $$1 if /^__version__\s*=\s*"([\d.]+(?:[\-\
 
 all: test build
 
+check:
+	python3 -m flake8 --config=extra/flake8.ini dmctool test
+	python2 -m flake8 --config=extra/flake8.ini dmctool test
+	@echo OK
+
 zip: test
 	python setup.py sdist --format=zip
 
