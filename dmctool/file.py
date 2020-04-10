@@ -193,7 +193,7 @@ class GalilFile(object):
         # WARNING: Any trailing semicolon/EOL checks need to be zero-width assertions
         p_sub_def   = re.compile(r"(?:^|;)(#[a-zA-Z0-9_]{1,7})")
         p_sub_arg   = re.compile(r"""
-                         (?:^|;)
+                         (?:^|;) \s*
                          (?:J[SP]|XQ) (\#[a-zA-Z0-9_]{1,7})      # jump name
                          ((?:\(.*?\))?)                          # optional arguments
                          (?= ; | $                               # endl
@@ -219,8 +219,9 @@ class GalilFile(object):
         JSP_line    = collections.defaultdict(list)
 
         if warnings:
-            for jump in p_if_js.findall(content):
-                errors.append( "IF(...);{} better written as {},(...)".format(jump, jump) )
+            for match in p_if_js.finditer(content):
+                lineno = len(content[0:match.start()].split("\n"))
+                errors.append( "line {0}, IF(...);{1} better written as {1},(...)".format(lineno, match.group(1)) )
 
         lineno = 0
         for line in content.split("\n"):
