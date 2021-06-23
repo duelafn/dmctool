@@ -6,4 +6,4 @@
 # This software is Copyright (c) 2013 APCI, LLC.
 
 from __future__ import division, absolute_import, print_function, unicode_literals
-__version__ = "1.4.0"
+__version__ = "1.4.1"
