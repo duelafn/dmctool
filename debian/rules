@@ -5,4 +5,4 @@ export PYBUILD_NAME=dmctool
 export PYBUILD_AFTER_INSTALL=rm '{destdir}/usr/bin/dmctool'
 
 %:
-	dh $@ --with python2,python3 --buildsystem=pybuild
+	dh $@ --with python3 --buildsystem=pybuild

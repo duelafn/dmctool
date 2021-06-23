@@ -14,14 +14,13 @@ all: test build
 
 check:
 	python3 -m flake8 --config=extra/flake8.ini dmctool test
-	python2 -m flake8 --config=extra/flake8.ini dmctool test
 	@echo OK
 
 zip: test
-	python setup.py sdist --format=zip
+	python3 setup.py sdist --format=zip
 
 sdist: test
-	python setup.py sdist
+	python3 setup.py sdist
 
 dist: test debbuild
 	mkdir -p dist
@@ -40,11 +39,10 @@ debbuild: test sdist
 
 
 build:
-	python setup.py build_ext --inplace
+	python3 setup.py build_ext --inplace
 
 test:
 	python3 -E -B -m nose --verbosity=0 test
-	python2 -E -B -m nose --verbosity=0 test
 
 clean:
 	pyclean .
